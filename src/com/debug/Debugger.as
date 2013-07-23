@@ -18,7 +18,11 @@ package com.debug
 		
 		public static const LEVEL_ERROR:uint = 3;
 		
-		private static const CONNECT:String = "lc_connection";
+		
+		/**
+		 * 对应于要与接收方 LocalConnection 对象进行通信的 send() 命令中指定的连接名称
+		 */		
+		private static const CONNECT:String = "_lc_connection";
 		
 		private static var _isConnected:Boolean;
 		
