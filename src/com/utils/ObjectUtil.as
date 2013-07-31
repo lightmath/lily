@@ -2,6 +2,7 @@
 {
 	import flash.net.registerClassAlias;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
@@ -121,5 +122,51 @@
 			temps.sort(function():Number{ return Math.random()-0.5;});
 			return temps;
 		}
+		
+		private static function copyArray(souce:Array):Array
+		{
+			var temp:Array = [];
+			var L:uint = souce.length;
+			for(var i:uint=0;i<L;i++)
+			{
+				var item:* = souce[i];
+				if(item is Array)
+				{
+					temp.push(copyArray(item));
+				}
+				else if(item is Dictionary)
+				{
+					temp.push(copyDictionary(item));
+				}
+				else
+				{
+					temp.push(clone(item));
+				}
+			}
+			return temp;
+		}
+		
+		private static function copyDictionary(source:Dictionary):Dictionary
+		{
+			var temp:Dictionary = new Dictionary();
+			for(var key:String in source)
+			{
+				var value:* = source[key];
+				if(value is Array)
+				{
+					temp[key] = copyArray(value);
+				}
+				else if(value is Dictionary)
+				{
+					temp[key] = copyDictionary(value);
+				}
+				else
+				{
+					temp[key] = clone(value);
+				}
+			}
+			return temp;
+		}
+		
 	}
 }

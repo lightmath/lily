@@ -4,7 +4,7 @@ package com.utils
 	import flash.utils.ByteArray;
 	/**
 	 * 64位无符号整型
-	 * @author DOM
+	 * @author LC
 	 */
 	public class Uint64 
 	{		
