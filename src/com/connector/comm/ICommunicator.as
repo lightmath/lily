@@ -1,8 +1,7 @@
 package com.connector.comm
 {
-	import com.connector.bit.Bytes;
-	
 	import flash.events.IEventDispatcher;
+	import flash.utils.ByteArray;
 
 	/**
 	 * 通讯器接口。
@@ -13,7 +12,7 @@ package com.connector.comm
 	{
 		function connect(uri : String) : void;
 		function close() : void;
-		function send(bytes : Bytes) : void;
+		function send(bytes : ByteArray) : void;
 		function isConnected() : Boolean;
 	}
 }
