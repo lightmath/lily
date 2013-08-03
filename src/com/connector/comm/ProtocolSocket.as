@@ -1,5 +1,7 @@
 package com.connector.comm {
 
+import com.connector.bit.Bytes;
+
 import flash.errors.EOFError;
 import flash.errors.IOError;
 import flash.events.Event;
@@ -8,7 +10,6 @@ import flash.events.ProgressEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.ObjectEncoding;
 import flash.net.Socket;
-import flash.utils.ByteArray;
 import flash.utils.Endian;
 import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
@@ -27,13 +28,13 @@ public class ProtocolSocket extends AbstractCommunicator {
     private var host : String;
     private var port : uint;
     //断开的包，等待后续的包。
-    private var cutBytes : ByteArray;
+	private var cutBytes : Bytes;
     private var timeoutInt : int;
 
     public function ProtocolSocket() {
-        cutBytes = new ByteArray();
+        cutBytes = new Bytes();
         socket = new Socket();
-        socket.endian = Endian.BIG_ENDIAN;
+        socket.endian = Endian.LITTLE_ENDIAN;
         socket.objectEncoding = ObjectEncoding.AMF0;
         socket.addEventListener(Event.CLOSE, __onClose, false, 0, true);
         socket.addEventListener(Event.CONNECT, __onConnect, false, 0, true);
@@ -69,7 +70,7 @@ public class ProtocolSocket extends AbstractCommunicator {
         if (socket.bytesAvailable > 0) {
             try {
                 /* 有可能是几个指令连在一块，需要拆开解析 */
-                var buffer : ByteArray = new ByteArray();
+                var buffer : Bytes = new Bytes();
                 socket.readBytes(buffer);
                 processBuffer(buffer);
             } catch (e1 : EOFError) {
@@ -78,7 +79,7 @@ public class ProtocolSocket extends AbstractCommunicator {
         }
     }
 
-    private function processBuffer(buffer : ByteArray) : void {
+    private function processBuffer(buffer : Bytes) : void {
         if (cutBytes.length == 0) {
             cutBytes = buffer;
         } else {
@@ -100,13 +101,13 @@ public class ProtocolSocket extends AbstractCommunicator {
                 break;
             } else {
                 //正常的包
-                var oneBytes : ByteArray = new ByteArray();
+                var oneBytes : Bytes = new Bytes();
                 cutBytes.readBytes(oneBytes, 0, oneLen);
                 //通知有新的包
                 onData(oneBytes);
             }
         }
-        var newCutBytes : ByteArray = new ByteArray();
+        var newCutBytes : Bytes = new Bytes();
 
         //如果还有断包
         if (cutBytes.bytesAvailable > 0) {
@@ -150,7 +151,7 @@ public class ProtocolSocket extends AbstractCommunicator {
 	 * 向后台放送字节数组
 	 * @param bytes
 	 */
-    override public function send(bytes : ByteArray) : void {
+    override public function send(bytes : Bytes) : void {
         if (isConnected() && bytes.length > 0) {
             socket.writeBytes(bytes);
             socket.flush();

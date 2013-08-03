@@ -1,7 +1,8 @@
 package com.connector.event{
 
+import com.connector.bit.Bytes;
+
 import flash.events.Event;
-import flash.utils.ByteArray;
 
 /**
  * 通讯器的事件。
@@ -24,9 +25,9 @@ public class CommunicatorEvent extends Event {
 	 */	
     public static const ON_DATA : String = "onData";
 	
-    private var data : ByteArray;
+    private var data : Bytes;
 
-    public function CommunicatorEvent(type : String, data : ByteArray = null) {
+    public function CommunicatorEvent(type : String, data : Bytes = null) {
         super(type);
 
         if (data != null)
@@ -34,20 +35,13 @@ public class CommunicatorEvent extends Event {
         this.data = data;
     }
 
-    public function getData() : ByteArray {
+    public function getData() : Bytes {
         return data;
     }
 
     override public function clone() : Event {
-        return new CommunicatorEvent(type, data == null ? data : cloneData());
+		return new CommunicatorEvent(type, data == null ? data : data.clone());
     }
 	
-	private function cloneData():ByteArray
-	{
-		var cloneBytes : ByteArray = new ByteArray();
-		cloneBytes.writeBytes(data);
-		cloneBytes.position = 0;
-		return cloneBytes;
-	}
 }
 }
