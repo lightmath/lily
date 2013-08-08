@@ -87,6 +87,7 @@ package com.utils
 		{
 			return toString();
 		}
+		
 		/**
 		 * 从十进制字符串内读取高位和低位
 		 */		

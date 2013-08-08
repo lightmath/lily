@@ -1,9 +1,9 @@
 package com.connector.comm {
 
+import com.connector.comm.bit.Bytes;
 import com.connector.event.CommunicatorEvent;
 
 import flash.events.EventDispatcher;
-import flash.utils.ByteArray;
 
 
 /**
@@ -28,7 +28,7 @@ public class AbstractCommunicator extends EventDispatcher implements ICommunicat
     public function close() : void {
     }
 
-    public function send(bytes : ByteArray) : void {
+    public function send(bytes : Bytes) : void {
     }
 
     public function isConnected() : Boolean {
@@ -57,7 +57,7 @@ public class AbstractCommunicator extends EventDispatcher implements ICommunicat
      * 收到协议时调用。
      * @param p Bytes数据。
      */
-    protected function onData(data : ByteArray) : void {
+    protected function onData(data : Bytes) : void {
         dispatchEvent(new CommunicatorEvent(CommunicatorEvent.ON_DATA, data));
     }
 }
