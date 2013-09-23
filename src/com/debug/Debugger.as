@@ -22,7 +22,7 @@ package com.debug
 		/**
 		 * 对应于要与接收方 LocalConnection 对象进行通信的 send() 命令中指定的连接名称
 		 */		
-		private static const CONNECT:String = "_lc_connection";
+		private static const CONNECT:String = "_authorlc_connection";
 		
 		private static var _isConnected:Boolean;
 		
